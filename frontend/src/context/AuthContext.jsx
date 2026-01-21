@@ -6,37 +6,42 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true); 
 
   // LOAD USER ON REFRESH
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
+    const token = localStorage.getItem("token");
 
-    if (storedUser) {
+    if (storedUser && token) {
       setUser(JSON.parse(storedUser));
       setIsAuthenticated(true);
     }
+    setLoading(false);
   }, []);
 
   // REGISTER
   const register = async (formData) => {
     const { data } = await API.post("/auth/register", formData);
 
-    localStorage.setItem("token",data.token);
+    localStorage.setItem("token", data.token);
     localStorage.setItem("user", JSON.stringify(data.user));
     
     setUser(data.user);
     setIsAuthenticated(true);
   };
 
-  // LOGIN
+  // LOGIN (UPDATED)
   const login = async (formData) => {
     const { data } = await API.post("/auth/login", formData);
 
-    localStorage.setItem("token",data.token);
+    localStorage.setItem("token", data.token);
     localStorage.setItem("user", JSON.stringify(data.user));
     
     setUser(data.user);
     setIsAuthenticated(true);
+
+    return data.user; // ✅ CRITICAL: Returns user data to the Login page
   };
 
   // LOGOUT
@@ -49,9 +54,9 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated, login, register, logout }}
+      value={{ user, isAuthenticated, loading, login, register, logout }}
     >
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 };

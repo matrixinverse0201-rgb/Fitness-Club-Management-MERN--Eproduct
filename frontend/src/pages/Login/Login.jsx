@@ -12,8 +12,16 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login({ email, password });
-      navigate("/dashboard");
+      // 1. Call login and wait for the user data to be returned
+      const loggedInUser = await login({ email, password });
+
+      // 2. Check the role and navigate
+      if (loggedInUser.role === "admin") {
+        navigate("/admin"); // ✅ Redirects Admins here
+      } else {
+        navigate("/dashboard"); // ✅ Redirects Users here
+      }
+
     } catch (error) {
       alert(error.response?.data?.message || "Login failed");
     }

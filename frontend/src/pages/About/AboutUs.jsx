@@ -1,6 +1,8 @@
 import React from "react";
 import "./AboutUs.css";
 import aboutBanner from "../../assets/breadcrumb-bg.jpg";
+import { useState, useEffect } from "react"; 
+import API from "../../api/axios"; 
 
 import icon1 from "../../assets/icon1.svg";
 import icon2 from "../../assets/icon2.svg";
@@ -8,6 +10,20 @@ import icon3 from "../../assets/icon3.svg";
 import icon4 from "../../assets/icon4.svg";
 
 const About = () => {
+  const [trainers, setTrainers] = useState([]);
+
+  // Fetch Trainers Data
+  useEffect(() => {
+    const fetchTrainers = async () => {
+      try {
+        const { data } = await API.get("/trainers");
+        setTrainers(data);
+      } catch (error) {
+        console.error("Failed to load trainers");
+      }
+    };
+    fetchTrainers();
+  }, []);
   return (
     <>
       {/* HERO */}
@@ -134,29 +150,19 @@ const About = () => {
         </div>
 
         <div className="team-grid">
-          <div className="team-card">
-            <img src="/assets/team-1.jpg" alt="Athart Rachel" />
-            <div className="team-overlay">
-              <h3>Athart Rachel</h3>
-              <p>GYM TRAINER</p>
-            </div>
-          </div>
-
-          <div className="team-card">
-            <img src="/assets/team-2.jpg" alt="John Smith" />
-            <div className="team-overlay">
-              <h3>John Smith</h3>
-              <p>FITNESS COACH</p>
-            </div>
-          </div>
-
-          <div className="team-card">
-            <img src="/assets/team-3.jpg" alt="Alex Brown" />
-            <div className="team-overlay">
-              <h3>Alex Brown</h3>
-              <p>BODY TRAINER</p>
-            </div>
-          </div>
+          {trainers.length === 0 ? (
+            <p>Loading trainers...</p>
+          ) : (
+            trainers.map((trainer) => (
+              <div className="team-card" key={trainer._id}>
+                <img src={trainer.image} alt={trainer.name} />
+                <div className="team-overlay">
+                  <h3>{trainer.name}</h3>
+                  <p>{trainer.role.toUpperCase()}</p>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </section>
       {/* ================= CTA SECTION ================= */}

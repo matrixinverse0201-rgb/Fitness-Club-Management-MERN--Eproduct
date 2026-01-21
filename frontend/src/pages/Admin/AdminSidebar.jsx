@@ -24,6 +24,16 @@ const AdminSidebar = ({ active, setActive }) => {
       <button onClick={() => setActive("feedback")} className={active==="feedback"?"active":""}>
         Feedback
       </button>
+
+      <button onClick={() => setActive("trainers")} className={active === "trainers" ? "active" : ""}>
+        Trainers
+      </button>
+
+      <button onClick={() => setActive("gallery")} className={active === "gallery" ? "active" : ""}>
+        Gallery
+      </button>
+      
+
     </aside>
   );
 };

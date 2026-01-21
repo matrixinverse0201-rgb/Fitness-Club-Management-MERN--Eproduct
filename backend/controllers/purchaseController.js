@@ -54,3 +54,17 @@ export const deletePurchase = async (req, res) => {
     res.status(500).json({ message: "Failed to delete plan" });
   }
 };
+
+// 3. GET ALL PURCHASES (ADMIN ONLY)
+export const getAllPurchases = async (req, res) => {
+  try {
+    const purchases = await Purchase.find()
+      .populate("user", "name email") // Get User Name & Email
+      .sort({ createdAt: -1 });       // Newest first
+
+    res.json(purchases);
+  } catch (error) {
+    console.error("Error fetching purchases:", error);
+    res.status(500).json({ message: "Failed to fetch payment history" });
+  }
+};

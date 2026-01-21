@@ -10,16 +10,18 @@ import Services from "./pages/Services/Services";
 import Feedback from "./pages/Feedback/Feedback";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
-
+import Gallery from "./pages/Gallery/Gallery";
 import UserDashboard from "./pages/Dashboard/UserDashboard";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import ProtectedRoute from "./pages/routes/ProtectedRoute";
 import Payment from "./pages/Payment/Payment";
 import LocateGym from "./pages/LocateGym/LocateGym";
+import ScrollToTop from "./components/ScrollToTop";
 
 const App = () => {
   return (
     <>
+      <ScrollToTop/>
       <Navbar />
 
       <Routes>
@@ -30,6 +32,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/locate-gym" element={<LocateGym/>}/>
+        <Route path="/gallery" element={<Gallery/>}/>
       
 
       {/*USER PROTECTED */}
